@@ -1,4 +1,4 @@
-package test.t100.t001;
+package Scorpion;
 
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
