@@ -21,10 +21,10 @@ import org.jsoup.select.Elements;
  */
 public class WebContent {
     private String pattern ;
-  private  int CountLinks;
-  private  int CountTargets;
-   private Set<String> TargetSet;
-   private Set<String> LinkSet;
+    private int CountLinks;
+    private int CountTargets;
+    private Set<String> TargetSet;
+    private Set<String> LinkSet;
     
     public WebContent(String pattern){
         this.pattern=pattern;
@@ -54,68 +54,52 @@ public class WebContent {
         return LinkSet;
     }
      
-     private void addLink(String link)
-     {
+    private void addLink(String link)
+    {
         if(LinkSet.add(link))
-         CountLinks++;            //we count it here instead of the built in countgroup method to ignore duplicates
-     }
-      private void addTarget(String target)
-     {
+            CountLinks++;            //we count it here instead of the built in countgroup method to ignore duplicates
+    }
+    private void addTarget(String target)
+    {
         if (TargetSet.add(target))     //we count it here instead of the built in countgroup method to ignore duplicates
-         CountTargets++;
-     }
-      
-      
-      
-      public boolean Extract(String url){
+            CountTargets++;
+    }   
+    public boolean Extract(String url){
         TargetSet = new HashSet<String>();
         LinkSet = new HashSet<String>();
         CountLinks=0;
         CountTargets=0;
           try { 
-             //trying to connect to a webpage
-             Document doc = Jsoup.connect(url).ignoreContentType(true).get();  
-             Elements links = doc.select("a[href]");
-        
-             for (Element link : links) {
-                 ;
-                 addLink(sanatizelink(link.attr("abs:href")));
-             }
-             
-             Pattern p = Pattern.compile(pattern);
-             Matcher matcher = p.matcher(doc.text());
-             while (matcher.find())
-             {
-                 addTarget(matcher.group());
-
-             }
-             
-             return true;
-          }
-          
-          catch (IOException exc){
-              System.out.println(exc);
-              return false;
-          }
-          catch(IllegalArgumentException exc){
-              System.out.println(exc);
-              return false;
-          }
-      }
+            //trying to connect to a webpage
+            Document doc = Jsoup.connect(url).ignoreContentType(true).get();  
+            Elements links = doc.select("a[href]");   
+            for (Element link : links)
+                addLink(sanatizelink(link.attr("abs:href")));
+            Pattern p = Pattern.compile(pattern);
+            Matcher matcher = p.matcher(doc.text());
+            while (matcher.find())
+                addTarget(matcher.group());
+            return true;
+        }  
+        catch (IOException exc){
+            System.out.println(exc);
+            return false;
+        }
+        catch(IllegalArgumentException exc){
+            System.out.println(exc);
+            return false;
+        }
+    }
 
     public static String sanatizelink(String attr) {
       
-        if (attr.indexOf('#')!=-1){
+        if (attr.indexOf('#')!=-1)
             attr= attr.substring(0,attr.indexOf('#'));
-        }
-        if (attr.indexOf('?')!=-1){
+        if (attr.indexOf('?')!=-1) 
             attr= attr.substring(0,attr.indexOf('?'));
-        }
-        if (attr.length()>0){
-        if((attr.charAt(attr.length()-1))=='/'){
-            attr=attr.substring(0,attr.length()-1);
-        }
-        }
+        if (attr.length()>0)
+            if((attr.charAt(attr.length()-1))=='/') 
+                attr=attr.substring(0,attr.length()-1);
         return attr;
     }
 

@@ -43,22 +43,16 @@ public class NewJFrame extends javax.swing.JFrame {
      * Creates new form NewJFrame
      */
     public NewJFrame() {
-        
         initComponents();
         URLs=0;
-        TGS=0;
-        
+        targetNum=0;
         regex=new HashMap<String,String>();
         myLinks=new HashSet<String>();
         myTargets=new HashSet<String>();
         MainTableModel = (DefaultTableModel) MainTable.getModel();
         SecondaryTableModel = (DefaultTableModel) SecondaryTable.getModel();
         LoadRegex();
-         fc = new JFileChooser();
-         
-        
-        
-        
+        fc = new JFileChooser();
     }
 
     /**
@@ -433,17 +427,11 @@ public class NewJFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
         String url = WebContent.sanatizelink(JOptionPane.showInputDialog("Write a valid url"));
         url = WebContent.sanatizelink(url);
-         if (myLinks.add(url)){
-                MainTableModel.addRow(new Object[]{rowID,url,0,false});
-                rowID++;
-                
-            } 
-            
-        
-     //   MainTableModel.addRow(new Object[]{rowID,rowUrl,rowTargets,rowReferrer,rowScanned,rowSuccess);
-        
-        
-       
+        if (myLinks.add(url)){
+            MainTableModel.addRow(new Object[]{rowID,url,0,false});
+            rowID++;
+        } 
+
     }//GEN-LAST:event_addUrlButtonActionPerformed
 
     private void startButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_startButtonActionPerformed
@@ -451,9 +439,9 @@ public class NewJFrame extends javax.swing.JFrame {
       //  System.out.println(MainTableModel.getValueAt(0, 1).toString());
         if (startButton.getText().equals("Start")){
             startButton.setText("Stop");
-             stopLoop=false;
-             threadSlider.setEnabled(false);
-             ticket = new boolean[threadSlider.getValue()];
+            stopLoop=false;
+            threadSlider.setEnabled(false);
+            ticket = new boolean[threadSlider.getValue()];
             for(int i=0;i<threadSlider.getValue();i++)
                 Starter().start();
         }
@@ -465,7 +453,7 @@ public class NewJFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_startButtonActionPerformed
 
     private void SaveTablesButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SaveTablesButtonActionPerformed
-       SaveData();
+        SaveData();
     }//GEN-LAST:event_SaveTablesButtonActionPerformed
 
     private void LoadTablesButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LoadTablesButtonActionPerformed
@@ -477,32 +465,28 @@ public class NewJFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_ComboRegexActionPerformed
 
     private void addRegexButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addRegexButtonActionPerformed
-JTextField field1 = new JTextField();
-JTextField field2 = new JTextField();
-Object[] message = {
-    "Name:", field1,
-    "Regex:", field2,
-
-};
-int option = JOptionPane.showConfirmDialog(rootPane, message, "Enter all your values", JOptionPane.OK_CANCEL_OPTION);
-if (option == JOptionPane.OK_OPTION)
-{
-    String regexName = field1.getText();
-    String regexCode = field2.getText();
-    regex.put(regexName, regexCode);
-    ComboRegex.addItem(regexName);
-    SaveRegex();
-}      
+        JTextField field1 = new JTextField();
+        JTextField field2 = new JTextField();
+        Object[] message = {"Name:", field1, "Regex:", field2,};
+        int option = JOptionPane.showConfirmDialog(rootPane, message, "Enter all your values", JOptionPane.OK_CANCEL_OPTION);
+        if (option == JOptionPane.OK_OPTION)
+        {
+            String regexName = field1.getText();
+            String regexCode = field2.getText();
+            regex.put(regexName, regexCode);
+            ComboRegex.addItem(regexName);
+            SaveRegex();
+        }      
 
 
     }//GEN-LAST:event_addRegexButtonActionPerformed
 
     private void removeRegexButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeRegexButtonActionPerformed
         if(ComboRegex.getItemCount()>1){
-        regex.remove(ComboRegex.getSelectedItem().toString());
-        ComboRegex.removeItem(ComboRegex.getSelectedItem());
-        ComboRegex.actionPerformed(evt);
-        SaveRegex();
+            regex.remove(ComboRegex.getSelectedItem().toString());
+            ComboRegex.removeItem(ComboRegex.getSelectedItem());
+            ComboRegex.actionPerformed(evt);
+            SaveRegex();
         }
         else JOptionPane.showMessageDialog(rootPane, "Cant remove last regex");
         
@@ -516,17 +500,15 @@ if (option == JOptionPane.OK_OPTION)
         JTextField field2 = new JTextField();
         field2.setText(regex.get(key));
         Object[] message = {"Name:", field1,"Regex:", field2,};
-    int option = JOptionPane.showConfirmDialog(rootPane, message, "Enter all your values", JOptionPane.OK_CANCEL_OPTION);
-    if (option == JOptionPane.OK_OPTION)
-    {
-        String regexName = field1.getText();
-        String regexCode = field2.getText();
-        regex.put(regexName, regexCode);
-        ComboRegex.addItem(regexName);
-        SaveRegex();
-    }      
-
-
+        int option = JOptionPane.showConfirmDialog(rootPane, message, "Enter all your values", JOptionPane.OK_CANCEL_OPTION);
+        if (option == JOptionPane.OK_OPTION)
+        {
+            String regexName = field1.getText();
+            String regexCode = field2.getText();
+            regex.put(regexName, regexCode);
+            ComboRegex.addItem(regexName);
+            SaveRegex();
+        }      
     }//GEN-LAST:event_editRegexButtonActionPerformed
 
     private void clearButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearButtonActionPerformed
@@ -534,7 +516,7 @@ if (option == JOptionPane.OK_OPTION)
         MainTableModel.removeRow(0);
     while(SecondaryTableModel.getRowCount()!=0)
         SecondaryTableModel.removeRow(0);
-        TGS=0;
+    targetNum=0;
     myLinks.removeAll(myLinks);
     myTargets.removeAll(myTargets);
     rowID=0;
@@ -554,14 +536,14 @@ if (option == JOptionPane.OK_OPTION)
     }//GEN-LAST:event_MainTableMouseClicked
 
     private void SecondaryTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_SecondaryTableMouseClicked
-       try{
-        if(SwingUtilities.isRightMouseButton(evt)){
-        StringSelection stringSelection = new StringSelection(SecondaryTable.getValueAt(SecondaryTable.getSelectedRow(), 0).toString());
-        Clipboard clpbrd = Toolkit.getDefaultToolkit().getSystemClipboard();
-        clpbrd.setContents(stringSelection, null);
-        }} catch(ArrayIndexOutOfBoundsException ex){
-            
-     }
+        try{
+            if(SwingUtilities.isRightMouseButton(evt)){
+                StringSelection stringSelection = new StringSelection(SecondaryTable.getValueAt(SecondaryTable.getSelectedRow(), 0).toString());
+                Clipboard clpbrd = Toolkit.getDefaultToolkit().getSystemClipboard();
+                clpbrd.setContents(stringSelection, null);
+            }
+        } 
+        catch(ArrayIndexOutOfBoundsException ex){}
     }//GEN-LAST:event_SecondaryTableMouseClicked
 
     /**
@@ -636,34 +618,29 @@ if (option == JOptionPane.OK_OPTION)
 
     private void addLinkToTable(Set<String> linkSet){
         for (String link:linkSet){
-            
             if (myLinks.add(link)){
                 MainTableModel.addRow(new Object[]{rowID,link,0,false});
                 rowID++;
                 label6.setText(Integer.toString(rowID));
             } 
-         }
-                
-                
+        }          
     }
       
-    private void addTargetstoTable(int ref,Set<String> emailSet){
+    private void addTargetstoTable (int ref,Set<String> emailSet){
         for (String email:emailSet){
             if (myTargets.add(email)){
-                SecondaryTableModel.addRow(new Object[]{email,ref,1});
-                
-                label3.setText(Integer.toString(SecondaryTableModel.getRowCount()));
-                
-            } else {
+                SecondaryTableModel.addRow(new Object[]{email,ref,1}); 
+                label3.setText(Integer.toString(SecondaryTableModel.getRowCount()));  
+            }
+            else {
                 for(int i=0;i<SecondaryTableModel.getRowCount();i++)
                 {
-                    if(SecondaryTableModel.getValueAt(i, 0).toString().equals(email)) {
-                        
+                    if(SecondaryTableModel.getValueAt(i, 0).toString().equals(email)) {          
                         SecondaryTableModel.setValueAt(SecondaryTableModel.getValueAt(i,1).toString()+", "+ref, i, 1); //adding the link ref to the email
                         SecondaryTableModel.setValueAt(Integer.parseInt(SecondaryTableModel.getValueAt(i,2).toString())+1, i, 2);
                     }
-         }
-    }
+                }
+            }
         }
     }
     
@@ -672,255 +649,187 @@ if (option == JOptionPane.OK_OPTION)
         fc.setApproveButtonText("Load");
         fc.setDialogTitle("Load Table Data");
         int returnVal = fc.showOpenDialog(this);
-
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             File file = fc.getSelectedFile();
             //This is where a real application would open the file.
-
-         try {
-             if (file.exists()) {
-         
-                FileInputStream saveFile = new FileInputStream(file.getAbsolutePath());
-                 ObjectInputStream save = new ObjectInputStream(saveFile);
-                 MainTableHolder[] MainLoader = (MainTableHolder[]) save.readObject();
-                 SecondaryTableHolder[] SecondaryLoader = (SecondaryTableHolder[]) save.readObject();
-                 save.close();
-                 saveFile.close();
-                 rowID=MainLoader.length;
-                 label6.setText(Integer.toString(rowID));
-                 label3.setText(Integer.toString(SecondaryLoader.length));
-                 for(int i=0;i<MainLoader.length;i++){
-                    MainTableModel.addRow(new Object[]{i,MainLoader[i].getUrl(),MainLoader[i].getTargets(),MainLoader[i].getScanned()});    
-                    if (MainLoader[i].getScanned()) TGS++;
-                     
+            try {
+                if (file.exists()) {
+                    FileInputStream saveFile = new FileInputStream(file.getAbsolutePath());
+                    ObjectInputStream save = new ObjectInputStream(saveFile);
+                    MainTableHolder[] MainLoader = (MainTableHolder[]) save.readObject();
+                    SecondaryTableHolder[] SecondaryLoader = (SecondaryTableHolder[]) save.readObject();
+                    save.close();
+                    saveFile.close();
+                    rowID=MainLoader.length;
+                    label6.setText(Integer.toString(rowID));
+                    label3.setText(Integer.toString(SecondaryLoader.length));
+                    for(int i=0;i<MainLoader.length;i++){
+                        MainTableModel.addRow(new Object[]{i,MainLoader[i].getUrl(),MainLoader[i].getTargets(),MainLoader[i].getScanned()});    
+                        if (MainLoader[i].getScanned()) targetNum++;
+                    }
+                    label2.setText(Integer.toString(targetNum));
+                    for(int i=0;i<SecondaryLoader.length;i++){
+                        SecondaryTableModel.addRow(new Object[]{SecondaryLoader[i].getTarget(),SecondaryLoader[i].getIds(),SecondaryLoader[i].getSum()});    
+                    }
                  
-                 }
-                 label2.setText(Integer.toString(TGS));
-                 for(int i=0;i<SecondaryLoader.length;i++){
-                     SecondaryTableModel.addRow(new Object[]{SecondaryLoader[i].getTarget(),SecondaryLoader[i].getIds(),SecondaryLoader[i].getSum()});    
-                  
-                 }
-                 
-			}
-             
-             
-         } catch (IOException ioexc){
-             JOptionPane.showMessageDialog(rootPane, ioexc);
-             
-         }
-         
-         catch (ClassNotFoundException cnfexc){
-             JOptionPane.showMessageDialog(rootPane, cnfexc);
-        
-    }
-       
-    }
-        
+                }
+            } 
+            catch (IOException ioexc){
+                JOptionPane.showMessageDialog(rootPane, ioexc);
+            }
+            catch (ClassNotFoundException cnfexc){
+                JOptionPane.showMessageDialog(rootPane, cnfexc);
+            } 
+        }
     }   
 
 
 
     private void SaveRegex() {
-          File file = new File("Regex.data");
+        File file = new File("Regex.data");
         try {
-             if (!file.exists()) {
-				file.createNewFile();
-			}
+            if (!file.exists()) {
+                file.createNewFile();
+            }
 
-             FileOutputStream saveFile = new FileOutputStream("Regex.data");
-             ObjectOutputStream save = new ObjectOutputStream(saveFile);
-             
-             save.writeObject(regex);
-             save.close();
-             saveFile.close();
-
-             
+            FileOutputStream saveFile = new FileOutputStream("Regex.data");
+            ObjectOutputStream save = new ObjectOutputStream(saveFile);
+            save.writeObject(regex);
+            save.close();
+            saveFile.close();
         }
         catch (IOException ioex){
             JOptionPane.showMessageDialog(rootPane, ioex);
-        }
-        
-       
-            
-        
+        }         
     }
 
     private void LoadRegex() {
-            File file = new File("Regex.data");
-         try {
-             if (file.exists()) {
-         
+        File file = new File("Regex.data");
+        try {
+            if (file.exists()) {    
                 FileInputStream saveFile = new FileInputStream("Regex.data");
-                 ObjectInputStream save = new ObjectInputStream(saveFile);
+                ObjectInputStream save = new ObjectInputStream(saveFile);
                 regex=(HashMap) save.readObject();
-                 save.close();
-                 saveFile.close();
-                 for (Map.Entry<String, String> rex : regex.entrySet())
-                 {
-                     ComboRegex.addItem(rex.getKey());
-                 }
-                
-			} else { 
-                                regex.put("Email", "[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+");
-                                ComboRegex.addItem("Email");
-             }
-             
-             
-         } catch (IOException ioexc){
-             JOptionPane.showMessageDialog(rootPane, ioexc);
-             
-         }
-         
-         catch (ClassNotFoundException cnfexc){
-             JOptionPane.showMessageDialog(rootPane, cnfexc);
-        
-    }
-       
-        
+                save.close();
+                saveFile.close();
+                for (Map.Entry<String, String> rex : regex.entrySet())
+                {
+                    ComboRegex.addItem(rex.getKey());
+                }    
+            }
+            else { 
+                regex.put("Email", "[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+");
+                ComboRegex.addItem("Email");
+            }    
+        } 
+        catch (IOException ioexc){
+            JOptionPane.showMessageDialog(rootPane, ioexc);         
+        }
+        catch (ClassNotFoundException cnfexc){
+            JOptionPane.showMessageDialog(rootPane, cnfexc); 
+        }
     }
     
     
     
     private Thread Starter(){
-         Thread t = new Thread(new Runnable(){    //we want to be able to stop the loop 
-      @Override
-      public void run(){
-          int jump = threadSlider.getValue();         //how many skips each thread does to not step on the other threads's toes
-          int num=0;
-          for(int i=0;i<jump;i++){
-              if (!ticket[i]){
-                  num=i;                          //the first row the thread scans
-                  ticket[i]=true;                 //making it known which n is taken by tickets
-                  break;                  
-              } 
-          }
-          System.out.println("Run"+num);
-          WebContent webber = new WebContent(regex.get(ComboRegex.getSelectedItem().toString()));
-         
-              while(true)                                    //we check when there are enough rows for more threads
-                  if(MainTable.getRowCount()>num) break;
-              try {
-              Thread.sleep(1000);
-              }
-              catch(InterruptedException exc){
-                  System.out.println(exc);
-              }
-          
-            //bug, at the start the link list isnt big enough
-            for (int i=num;i<MainTable.getRowCount();i+=jump){   
-                
-                if (MainTableModel.getValueAt(i,3).equals(false)){
-                    System.out.println(i +"is now scanning");
-                    if (webber.Extract(MainTableModel.getValueAt(i, 1).toString())){   //we check if the webber succeeded
-                        
-                        int ref=Integer.parseInt(MainTableModel.getValueAt(i, 0).toString());  //we get the id for referrence
-                        addLinkToTable(webber.getLinkSet());
-                        addTargetstoTable(ref,webber.getTargetSet());
-                        MainTableModel.setValueAt(true, i, 3);  //set to scanned
-                        TGS++;
-                        label2.setText(Integer.toString(TGS));
-                        MainTableModel.setValueAt(webber.getCountTargets(), i, 2); //add the number of emails
-                        
+        Thread t = new Thread(new Runnable(){    //we want to be able to stop the loop 
+            @Override
+            public void run(){
+                int jump = threadSlider.getValue();         //how many skips each thread does to not step on the other threads's toes
+                int num=0;
+                for(int i=0;i<jump;i++){
+                    if (!ticket[i]){
+                        num=i;                          //the first row the thread scans
+                        ticket[i]=true;                 //making it known which n is taken by tickets
+                        break;                  
+                    } 
+                }
+                System.out.println("Run"+num);
+                WebContent webber = new WebContent(regex.get(ComboRegex.getSelectedItem().toString()));  
+                while(true){      //we check when there are enough rows for more threads
+                    if(MainTable.getRowCount()>num) break;
+                    try {
+                        Thread.sleep(1000);
                     }
-              
-                } 
-                
-                if(stopLoop) break;
+                    catch(InterruptedException exc){
+                        System.out.println(exc);
+                    }
+                }
+                for (int i=num;i<MainTable.getRowCount();i+=jump){       
+                    if (MainTableModel.getValueAt(i,3).equals(false)){
+                        System.out.println(i +"is now scanning");
+                        if (webber.Extract(MainTableModel.getValueAt(i, 1).toString())){   //we check if the webber succeeded            
+                            int ref=Integer.parseInt(MainTableModel.getValueAt(i, 0).toString());  //we get the id for referrence
+                            addLinkToTable(webber.getLinkSet());
+                            addTargetstoTable(ref,webber.getTargetSet());
+                            MainTableModel.setValueAt(true, i, 3);  //set to scanned
+                            targetNum++;
+                            label2.setText(Integer.toString(targetNum));
+                            MainTableModel.setValueAt(webber.getCountTargets(), i, 2); //add the number of emails   
+                        }
+                    }     
+                    if(stopLoop) break;
+                }
             }
-            } 
         });
         return t;
     }
 
     
 
-      private DefaultTableModel MainTableModel;
-  private DefaultTableModel SecondaryTableModel;
-  private Set<String>myLinks;
-  private Set<String>myTargets;
-  private Map<String,String>regex;
-  private int URLs;
-  private int TGS;
-  final JFileChooser fc;
-  
-  int rowID;
-  String rowUrl;
-  int rowTargets;
-  String rowReferrer;
-  boolean rowScanned ;
-  boolean stopLoop;
-  boolean ticket[];
-
+    private DefaultTableModel MainTableModel;
+    private DefaultTableModel SecondaryTableModel;
+    private Set<String>myLinks;
+    private Set<String>myTargets;
+    private Map<String,String>regex;
+    private int URLs;
+    private int targetNum;
+    private final JFileChooser fc;
+    private int rowID;
+    private String rowUrl;
+    private int rowTargets;
+    private String rowReferrer;
+    private boolean rowScanned ;
+    private boolean stopLoop;
+    private boolean ticket[];
     private void SaveData() {
-
         fc.setApproveButtonText("Save");
         fc.setDialogTitle("Save Table Data");
-        
-        
         boolean gotFile=false;
-       
         int returnVal = fc.showOpenDialog(this);
-
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             File file = fc.getSelectedFile();
             if(file.getName().indexOf('.')==-1){
                 file = new File(file.getAbsoluteFile()+".dat");
-             }
-            
-        try {
-             if (file.exists()) {
-				if (JOptionPane.showConfirmDialog(rootPane, "Are you sure you want to overwrite "+file.getName()+"?")==0){
-                                    gotFile =true;
-                                };
-                                 
-			} else {
-                          
-                          file.createNewFile(); 
-                            gotFile=true;
-             }
-             if (gotFile){
-             
-            
-             MainTableHolder[] MainShadow = new MainTableHolder[MainTable.getRowCount()]; //creates an array in the size of table to store the data
-             for(int i=0;i<MainShadow.length;i++){
-                 // now inserting each row
-                 MainShadow[i] = new MainTableHolder(i,MainTable.getValueAt(i,1).toString(),Integer.parseInt(MainTable.getValueAt(i,2).toString()),MainTable.getValueAt(i,3).equals(true));
-             }
-             
-             
-             
-             SecondaryTableHolder[] SecondaryShadow = new SecondaryTableHolder[SecondaryTable.getRowCount()]; //creates an array in the size of table to store the data
-             for(int i=0;i<SecondaryShadow.length;i++){
-                 // now inserting each row
-                 SecondaryShadow[i] = new SecondaryTableHolder(SecondaryTable.getValueAt(i, 0).toString(),SecondaryTable.getValueAt(i,1).toString(),Integer.parseInt(SecondaryTable.getValueAt(i,2).toString()));
-             }
-             
-             FileOutputStream saveFile = new FileOutputStream(file.getAbsolutePath());
-             ObjectOutputStream save = new ObjectOutputStream(saveFile);
-             
-             save.writeObject(MainShadow);
-             
-             save.writeObject(SecondaryShadow);
-             
-             save.close();
-             
-             saveFile.close();
-             
-             
-             
-             
-        } }
-        catch (IOException ioex){
-            JOptionPane.showMessageDialog(rootPane, ioex);
+            }
+            try {
+                if (file.exists()) {
+                    if (JOptionPane.showConfirmDialog(rootPane, "Are you sure you want to overwrite "+file.getName()+"?")==0)
+                        gotFile =true;
+                }
+                else {  
+                    file.createNewFile(); 
+                    gotFile=true;
+                }
+                if (gotFile){           
+                    MainTableHolder[] MainShadow = new MainTableHolder[MainTable.getRowCount()]; //creates an array in the size of table to store the data
+                    for(int i=0;i<MainShadow.length;i++)
+                        MainShadow[i] = new MainTableHolder(i,MainTable.getValueAt(i,1).toString(),Integer.parseInt(MainTable.getValueAt(i,2).toString()),MainTable.getValueAt(i,3).equals(true));
+                    SecondaryTableHolder[] SecondaryShadow = new SecondaryTableHolder[SecondaryTable.getRowCount()]; //creates an array in the size of table to store the data
+                    for(int i=0;i<SecondaryShadow.length;i++)
+                        SecondaryShadow[i] = new SecondaryTableHolder(SecondaryTable.getValueAt(i, 0).toString(),SecondaryTable.getValueAt(i,1).toString(),Integer.parseInt(SecondaryTable.getValueAt(i,2).toString()));
+                    FileOutputStream saveFile = new FileOutputStream(file.getAbsolutePath());
+                    ObjectOutputStream save = new ObjectOutputStream(saveFile);
+                    save.writeObject(MainShadow);
+                    save.writeObject(SecondaryShadow);
+                    save.close();
+                    saveFile.close();
+                }
+            }
+            catch (IOException ioex){
+                JOptionPane.showMessageDialog(rootPane, ioex);
+            }
         }
-        
-       
-        
-        }
-       
-            
-        
-        
     }
-
 }
